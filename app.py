@@ -189,6 +189,46 @@ elif opcao == "Tabuada":
             resultado = numero * i
             st.write(f"{numero} x {i} = {resultado}")
 
+# =========================
+# EQUAÇÃO DO 2º GRAU
+# =========================
+elif opcao == "Equação do 2º Grau":
+
+    st.subheader("Equação do 2º Grau")
+
+    a = st.number_input("Valor de a", value=1.0)
+    b = st.number_input("Valor de b", value=0.0)
+    c = st.number_input("Valor de c", value=0.0)
+
+    if st.button("Calcular Bhaskara"):
+
+        if a == 0:
+            st.error("O valor de 'a' não pode ser zero.")
+        else:
+
+            delta = (b ** 2) - (4 * a * c)
+
+            st.write(f"Delta = {delta}")
+
+            if delta < 0:
+                st.error("A equação não possui raízes reais.")
+
+            elif delta == 0:
+
+                x = -b / (2 * a)
+
+                st.success(f"A equação possui uma raiz real:")
+                st.write(f"x = {x}")
+
+            else:
+
+                x1 = (-b + math.sqrt(delta)) / (2 * a)
+                x2 = (-b - math.sqrt(delta)) / (2 * a)
+
+                st.success("A equação possui duas raízes reais:")
+                st.write(f"x1 = {x1}")
+                st.write(f"x2 = {x2}")
+
 # RODAPÉ
 st.markdown("---")
 st.caption("FEITO POR PYHETR00")
