@@ -100,16 +100,22 @@ elif opcao == "Raiz Quadrada":
         else:
             st.error("Número negativo não possui raiz real.")
 
-# =========================
 # ÁREA
-# =========================
 elif opcao == "Área":
 
     figura = st.selectbox(
         "Escolha a figura:",
-        ["Quadrado", "Retângulo", "Triângulo", "Círculo", "Losango", "Trapézio"]
+        [
+            "Quadrado",
+            "Retângulo",
+            "Triângulo",
+            "Círculo",
+            "Losango",
+            "Trapézio"
+        ]
     )
 
+    # QUADRADO
     if figura == "Quadrado":
 
         lado = st.number_input("Lado", value=0.0)
@@ -118,6 +124,7 @@ elif opcao == "Área":
             area = lado * lado
             st.success(f"Área do quadrado: {area}")
 
+    # RETÂNGULO
     elif figura == "Retângulo":
 
         base = st.number_input("Base", value=0.0)
@@ -127,6 +134,7 @@ elif opcao == "Área":
             area = base * altura
             st.success(f"Área do retângulo: {area}")
 
+    # TRIÂNGULO
     elif figura == "Triângulo":
 
         base = st.number_input("Base", value=0.0)
@@ -136,6 +144,7 @@ elif opcao == "Área":
             area = (base * altura) / 2
             st.success(f"Área do triângulo: {area}")
 
+    # CÍRCULO
     elif figura == "Círculo":
 
         raio = st.number_input("Raio", value=0.0)
@@ -144,51 +153,26 @@ elif opcao == "Área":
             area = math.pi * (raio ** 2)
             st.success(f"Área do círculo: {area:.2f}")
 
-elif figura == "Losango":
+    # LOSANGO
+    elif figura == "Losango":
 
-    diagonal_maior = st.number_input("Diagonal maior", value=0.0)
-    diagonal_menor = st.number_input("Diagonal menor", value=0.0)
+        diagonal_maior = st.number_input("Diagonal maior", value=0.0)
+        diagonal_menor = st.number_input("Diagonal menor", value=0.0)
 
-    if st.button("Calcular Área do Losango"):
-        area = (diagonal_maior * diagonal_menor) / 2
-        st.success(f"Área do losango: {area:.2f}")
+        if st.button("Calcular Área"):
+            area = (diagonal_maior * diagonal_menor) / 2
+            st.success(f"Área do losango: {area:.2f}")
 
-elif figura == "Trapézio":
+    # TRAPÉZIO
+    elif figura == "Trapézio":
 
-    base_maior = st.number_input("Base maior", value=0.0)
-    base_menor = st.number_input("Base menor", value=0.0)
-    altura = st.number_input("Altura", value=0.0)
+        base_maior = st.number_input("Base maior", value=0.0)
+        base_menor = st.number_input("Base menor", value=0.0)
+        altura = st.number_input("Altura", value=0.0)
 
-    if st.button("Calcular Área do Trapézio"):
-        area = ((base_maior + base_menor) * altura) / 2
-        st.success(f"Área do trapézio: {area:.2f}")
-
-# =========================
-# EQUAÇÃO DO 2º GRAU
-# =========================
-elif opcao == "Equação do 2º Grau":
-
-    st.write("Equação: ax² + bx + c = 0")
-
-    a = st.number_input("Valor de a", value=1.0)
-    b = st.number_input("Valor de b", value=0.0)
-    c = st.number_input("Valor de c", value=0.0)
-
-    if st.button("Resolver Equação"):
-
-        delta = (b ** 2) - (4 * a * c)
-
-        st.write(f"Delta = {delta}")
-
-        if delta < 0:
-            st.error("A equação não possui raízes reais.")
-
-        else:
-            x1 = (-b + math.sqrt(delta)) / (2 * a)
-            x2 = (-b - math.sqrt(delta)) / (2 * a)
-
-            st.success(f"x1 = {x1}")
-            st.success(f"x2 = {x2}")
+        if st.button("Calcular Área"):
+            area = ((base_maior + base_menor) * altura) / 2
+            st.success(f"Área do trapézio: {area:.2f}")
 
 # =========================
 # TABUADA
