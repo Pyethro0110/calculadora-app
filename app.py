@@ -1,43 +1,65 @@
 import streamlit as st
 import math
 
-# CONFIGURAÇÃO
 st.set_page_config(
     page_title="Super Calculadora Pro",
-    page_icon="🧮",
     layout="centered"
 )
 
-# ESTILO VISUAL
+# TEMA VISUAL FORTE
 st.markdown("""
 <style>
-    .main {
-        background-color: #0f1117;
-        color: white;
-    }
 
-    .stButton>button {
-        width: 100%;
-        height: 60px;
-        font-size: 18px;
-        border-radius: 12px;
-        background: #2b2f3a;
-        color: white;
-        border: none;
-    }
+body {
+    background-color: #0b0f19;
+}
 
-    .stButton>button:hover {
-        background: #4c5cff;
-        transition: 0.3s;
-    }
+.stApp {
+    background-color: #0b0f19;
+    color: #ffffff;
+}
 
-    .block-container {
-        padding-top: 2rem;
-    }
+h1, h2, h3 {
+    color: #ffffff;
+    text-align: center;
+}
 
-    h1, h2, h3 {
-        text-align: center;
-    }
+/* INPUTS */
+input {
+    background-color: #151a2b !important;
+    color: white !important;
+    border-radius: 10px !important;
+}
+
+/* BOTÕES */
+.stButton>button {
+    width: 100%;
+    height: 55px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #4c5cff, #7c3aed);
+    color: white;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.stButton>button:hover {
+    transform: scale(1.03);
+    background: linear-gradient(135deg, #6d28d9, #2563eb);
+}
+
+/* CAIXAS */
+.block-container {
+    padding-top: 2rem;
+}
+
+div[data-testid="stSelectbox"] {
+    background-color: #151a2b;
+    border-radius: 10px;
+    padding: 5px;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -45,13 +67,10 @@ st.markdown("""
 if "historico" not in st.session_state:
     st.session_state.historico = []
 
-# TÍTULO
 st.title("Super Calculadora Pro")
-st.write("Interface estilo aplicativo moderno")
 
-# MENU
 opcao = st.selectbox(
-    "Escolha uma função:",
+    "Escolha uma função",
     [
         "Básico",
         "Potência",
@@ -66,7 +85,9 @@ opcao = st.selectbox(
 
 st.markdown("---")
 
+# =====================
 # BÁSICO
+# =====================
 if opcao == "Básico":
 
     a = st.number_input("Número A", value=0.0)
@@ -96,9 +117,11 @@ if opcao == "Básico":
             st.session_state.historico.append(f"{a}/{b}={r}")
             st.success(r)
         else:
-            st.error("Erro: divisão por zero")
+            st.error("Erro divisão por zero")
 
+# =====================
 # POTÊNCIA
+# =====================
 elif opcao == "Potência":
 
     base = st.number_input("Base", value=0.0)
@@ -109,7 +132,9 @@ elif opcao == "Potência":
         st.session_state.historico.append(f"{base}^{exp}={r}")
         st.success(r)
 
+# =====================
 # PORCENTAGEM
+# =====================
 elif opcao == "Porcentagem":
 
     v = st.number_input("Valor", value=0.0)
@@ -120,7 +145,9 @@ elif opcao == "Porcentagem":
         st.session_state.historico.append(f"{p}% de {v}={r}")
         st.success(r)
 
+# =====================
 # RAIZ
+# =====================
 elif opcao == "Raiz":
 
     n = st.number_input("Número", value=0.0)
@@ -133,7 +160,9 @@ elif opcao == "Raiz":
         else:
             st.error("Número negativo não possui raiz real")
 
+# =====================
 # ÁREA
+# =====================
 elif opcao == "Área":
 
     fig = st.selectbox("Figura", ["Quadrado", "Retângulo", "Círculo"])
@@ -160,7 +189,9 @@ elif opcao == "Área":
             st.session_state.historico.append(f"Círculo={r}")
             st.success(round(r, 2))
 
+# =====================
 # BHASKARA
+# =====================
 elif opcao == "Bhaskara":
 
     a = st.number_input("a", value=1.0)
@@ -180,7 +211,9 @@ elif opcao == "Bhaskara":
             st.session_state.historico.append(f"x1={x1}, x2={x2}")
             st.success(f"x1={x1} | x2={x2}")
 
+# =====================
 # TABUADA
+# =====================
 elif opcao == "Tabuada":
 
     n = st.number_input("Número", value=1)
@@ -189,7 +222,9 @@ elif opcao == "Tabuada":
         for i in range(1, 11):
             st.write(f"{n} x {i} = {n*i}")
 
+# =====================
 # TEMPERATURA
+# =====================
 elif opcao == "Temperatura":
 
     t = st.number_input("Temperatura", value=0.0)
@@ -211,16 +246,14 @@ elif opcao == "Temperatura":
         st.session_state.historico.append(f"Temp={r}")
         st.success(round(r, 2))
 
+# =====================
 # HISTÓRICO
+# =====================
 st.markdown("---")
 st.subheader("Histórico")
 
-col1, col2 = st.columns(2)
-
-with col1:
-    if st.button("Limpar histórico"):
-        st.session_state.historico = []
-        st.success("Histórico limpo")
+if st.button("Limpar histórico"):
+    st.session_state.historico = []
 
 for item in st.session_state.historico[-8:]:
-    st.write(item)
+    st.write("•", item)
