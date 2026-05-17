@@ -188,5 +188,4 @@ elif opcao == "Tabuada":
 
 # RODAPÉ
 st.markdown("---")
-st.caption("FEITO POR PYHETR00
-Criado com Python + Streamlit ")
+st.caption("FEITO POR PYHETR00")
