@@ -2,7 +2,7 @@ import streamlit as st
 import math
 
 st.set_page_config(
-    page_title="Calculadora Multi",
+    page_title="calculadora-app",
     layout="centered"
 )
 
@@ -12,194 +12,202 @@ st.set_page_config(
 if "history" not in st.session_state:
     st.session_state.history = []
 
+if "mem" not in st.session_state:
+    st.session_state.mem = 0
+
+# =========================
+# ESTILO RETRÔ PIXEL
+# =========================
+st.markdown("""
+<style>
+
+.stApp {
+    background: #050914;
+    color: #7dd3fc;
+    font-family: monospace;
+}
+
+/* ASSINATURA HP */
+.hp {
+    font-size: 12px;
+    color: #38bdf8;
+    opacity: 0.8;
+    margin-bottom: 5px;
+}
+
+/* TÍTULO RETRÔ */
+h1 {
+    color: #38bdf8;
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+/* DISPLAY RETRÔ */
+.display {
+    background: #0b1220;
+    border: 1px solid #38bdf8;
+    padding: 20px;
+    border-radius: 6px;
+    font-size: 28px;
+    text-align: right;
+    margin-bottom: 10px;
+    box-shadow: 0 0 10px #38bdf8;
+}
+
+/* BOTÕES PIXEL */
+.stButton>button {
+    background: #0b1220;
+    color: #7dd3fc;
+    border: 1px solid #38bdf8;
+    height: 55px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.stButton>button:hover {
+    background: #38bdf8;
+    color: #0b1220;
+}
+
+/* HISTÓRICO */
+.history {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px dashed #38bdf8;
+    font-size: 13px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# =========================
+# ASSINATURA
+# =========================
+st.markdown('<div class="hp">hp // pyhetr00 system</div>', unsafe_allow_html=True)
+
 # =========================
 # TÍTULO
 # =========================
-st.title("Calculadora Multi Funções")
-
-st.write("Escolha uma função no menu abaixo")
+st.title("calculadora barra app")
 
 # =========================
-# MENU PRINCIPAL
+# FUNÇÕES
 # =========================
-opcao = st.selectbox(
-    "Menu",
-    [
-        "Operações Básicas",
-        "Potência",
-        "Porcentagem",
-        "Raiz Quadrada",
-        "Logaritmo",
-        "Conversor de Temperatura",
-        "Conversor de Medidas",
-        "Bhaskara",
-        "IMC",
-        "Histórico"
-    ]
-)
+def add(x):
+    st.session_state.expr = st.session_state.get("expr", "") + str(x)
 
+def clear():
+    st.session_state.expr = ""
+
+def calc(expr):
+    try:
+        return eval(expr, {"__builtins__": None}, {})
+    except:
+        return "erro"
+
+# init expr
+if "expr" not in st.session_state:
+    st.session_state.expr = ""
+
+# =========================
+# DISPLAY
+# =========================
+st.markdown(f"""
+<div class="display">
+{st.session_state.expr or "0"}
+</div>
+""", unsafe_allow_html=True)
+
+# =========================
+# CALCULADORA BASE
+# =========================
+col1, col2, col3, col4 = st.columns(4)
+
+col1.button("C", on_click=clear)
+col2.button("7", on_click=lambda: add("7"))
+col3.button("8", on_click=lambda: add("8"))
+col4.button("9", on_click=lambda: add("9"))
+
+col1, col2, col3, col4 = st.columns(4)
+
+col1.button("4", on_click=lambda: add("4"))
+col2.button("5", on_click=lambda: add("5"))
+col3.button("6", on_click=lambda: add("6"))
+col4.button("+", on_click=lambda: add("+"))
+
+col1, col2, col3, col4 = st.columns(4)
+
+col1.button("1", on_click=lambda: add("1"))
+col2.button("2", on_click=lambda: add("2"))
+col3.button("3", on_click=lambda: add("3"))
+col4.button("-", on_click=lambda: add("-"))
+
+col1, col2, col3, col4 = st.columns(4)
+
+col1.button("0", on_click=lambda: add("0"))
+col2.button(".", on_click=lambda: add("."))
+
+if col3.button("="):
+    r = calc(st.session_state.expr)
+    st.session_state.history.append(f"{st.session_state.expr} = {r}")
+    st.session_state.expr = str(r)
+
+col4.button("÷", on_click=lambda: add("/"))
+
+# =========================
+# FUNÇÕES RETRÔ EXTRAS
+# =========================
 st.markdown("---")
 
-# =========================
-# OPERAÇÕES BÁSICAS
-# =========================
-if opcao == "Operações Básicas":
+col1, col2, col3 = st.columns(3)
 
-    a = st.number_input("Número 1", value=0.0)
-    b = st.number_input("Número 2", value=0.0)
+n = st.number_input("valor", value=1.0)
 
-    operacao = st.selectbox("Operação", ["+", "-", "*", "/"])
+if col1.button("√"):
+    r = math.sqrt(n)
+    st.session_state.history.append(f"√{n} = {r}")
+    st.session_state.expr = str(r)
 
-    if st.button("Calcular"):
+if col2.button("x²"):
+    r = n ** 2
+    st.session_state.history.append(f"{n}² = {r}")
+    st.session_state.expr = str(r)
 
-        if operacao == "+":
-            r = a + b
-        elif operacao == "-":
-            r = a - b
-        elif operacao == "*":
-            r = a * b
-        elif operacao == "/":
-            r = a / b if b != 0 else "Erro divisão por zero"
+if col3.button("log"):
+    r = math.log10(n)
+    st.session_state.history.append(f"log {n} = {r}")
+    st.session_state.expr = str(r)
 
-        st.session_state.history.append(f"{a} {operacao} {b} = {r}")
-        st.success(r)
+col1, col2, col3 = st.columns(3)
 
-# =========================
-# POTÊNCIA
-# =========================
-elif opcao == "Potência":
+if col1.button("!"):
+    r = math.factorial(int(n))
+    st.session_state.history.append(f"{n}! = {r}")
+    st.session_state.expr = str(r)
 
-    base = st.number_input("Base", value=0.0)
-    exp = st.number_input("Expoente", value=0.0)
+if col2.button("%"):
+    r = n / 100
+    st.session_state.history.append(f"{n}% = {r}")
+    st.session_state.expr = str(r)
 
-    if st.button("Calcular"):
-        r = base ** exp
-        st.session_state.history.append(f"{base}^{exp} = {r}")
-        st.success(r)
-
-# =========================
-# PORCENTAGEM
-# =========================
-elif opcao == "Porcentagem":
-
-    valor = st.number_input("Valor", value=0.0)
-    porc = st.number_input("Porcentagem (%)", value=0.0)
-
-    if st.button("Calcular"):
-        r = (valor * porc) / 100
-        st.session_state.history.append(f"{porc}% de {valor} = {r}")
-        st.success(r)
-
-# =========================
-# RAIZ
-# =========================
-elif opcao == "Raiz Quadrada":
-
-    n = st.number_input("Número", value=0.0)
-
-    if st.button("Calcular"):
-        if n >= 0:
-            r = math.sqrt(n)
-        else:
-            r = "Número inválido"
-
-        st.session_state.history.append(f"√{n} = {r}")
-        st.success(r)
-
-# =========================
-# LOGARITMO
-# =========================
-elif opcao == "Logaritmo":
-
-    n = st.number_input("Número", value=1.0)
-
-    if st.button("Calcular"):
-        if n > 0:
-            r = math.log10(n)
-        else:
-            r = "Inválido"
-
-        st.session_state.history.append(f"log({n}) = {r}")
-        st.success(r)
-
-# =========================
-# TEMPERATURA
-# =========================
-elif opcao == "Conversor de Temperatura":
-
-    t = st.number_input("Temperatura", value=0.0)
-
-    tipo = st.selectbox("Conversão", ["C → F", "F → C", "C → K"])
-
-    if st.button("Converter"):
-
-        if tipo == "C → F":
-            r = (t * 9/5) + 32
-        elif tipo == "F → C":
-            r = (t - 32) * 5/9
-        else:
-            r = t + 273.15
-
-        st.session_state.history.append(f"{t} {tipo} = {r}")
-        st.success(r)
-
-# =========================
-# MEDIDAS
-# =========================
-elif opcao == "Conversor de Medidas":
-
-    m = st.number_input("Metros", value=1.0)
-
-    if st.button("Converter"):
-        r = m * 100
-        st.session_state.history.append(f"{m} m = {r} cm")
-        st.success(f"{r} cm")
-
-# =========================
-# BHASKARA
-# =========================
-elif opcao == "Bhaskara":
-
-    a = st.number_input("a", value=1.0)
-    b = st.number_input("b", value=0.0)
-    c = st.number_input("c", value=0.0)
-
-    if st.button("Resolver"):
-
-        delta = b**2 - 4*a*c
-
-        if delta < 0:
-            r = "Sem raízes reais"
-        else:
-            x1 = (-b + math.sqrt(delta)) / (2*a)
-            x2 = (-b - math.sqrt(delta)) / (2*a)
-            r = f"x1={x1}, x2={x2}"
-
-        st.session_state.history.append(f"Bhaskara: {r}")
-        st.success(r)
-
-# =========================
-# IMC
-# =========================
-elif opcao == "IMC":
-
-    peso = st.number_input("Peso (kg)", value=70.0)
-    altura = st.number_input("Altura (m)", value=1.70)
-
-    if st.button("Calcular"):
-        r = peso / (altura**2)
-        st.session_state.history.append(f"IMC = {r}")
-        st.success(round(r, 2))
+if col3.button("³√"):
+    r = n ** (1/3)
+    st.session_state.history.append(f"³√{n} = {r}")
+    st.session_state.expr = str(r)
 
 # =========================
 # HISTÓRICO
 # =========================
-elif opcao == "Histórico":
+st.markdown("---")
+st.subheader("history log")
 
-    st.subheader("Histórico de cálculos")
+if st.button("clear history"):
+    st.session_state.history = []
 
-    if st.button("Limpar histórico"):
-        st.session_state.history = []
+st.markdown('<div class="history">', unsafe_allow_html=True)
 
-    for item in st.session_state.history[-15:]:
-        st.write(item)
+for h in st.session_state.history[-10:]:
+    st.write(h)
+
+st.markdown("</div>", unsafe_allow_html=True)
