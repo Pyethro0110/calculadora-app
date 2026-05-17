@@ -13,41 +13,9 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 # =========================
-# ESTILO SIMPLES
-# =========================
-st.markdown("""
-<style>
-
-.stApp {
-    background: #f8fafc;
-    color: #111827;
-    font-family: Arial, sans-serif;
-}
-
-/* TÍTULO */
-.title {
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
-    color: #0ea5e9;
-    margin-bottom: 5px;
-}
-
-/* ASSINATURA */
-.footer {
-    margin-top: 30px;
-    text-align: center;
-    font-size: 12px;
-    color: #64748b;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
-# =========================
 # TÍTULO
 # =========================
-st.markdown('<div class="title">calculadora-app</div>', unsafe_allow_html=True)
+st.title("calculadora-app")
 
 st.write("Escolha uma função no menu abaixo")
 
@@ -235,10 +203,7 @@ elif opcao == "Histórico":
         st.write(item)
 
 # =========================
-# RODAPÉ (SUA ASSINATURA)
+# RODAPÉ (ASSINATURA ORIGINAL)
 # =========================
-st.markdown("""
-<div class="footer">
-FEITO POR PYHETR00
-</div>
-""", unsafe_allow_html=True)
+st.markdown("---")
+st.caption("FEITO POR PYHETR00")
