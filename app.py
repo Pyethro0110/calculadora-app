@@ -146,22 +146,22 @@ elif opcao == "Área":
 
 elif figura == "Losango":
 
-    diagonal_maior = st.number_input("Diagonal maior", value=0,0)
-    diagonal_menor = st.number_input("Diagonal menor", value=0,0)
+    diagonal_maior = st.number_input("Diagonal maior", value=0.0)
+    diagonal_menor = st.number_input("Diagonal menor", value=0.0)
 
-    if st.button("Calcular Área"):
+    if st.button("Calcular Área do Losango"):
         area = (diagonal_maior * diagonal_menor) / 2
-        st.sucess(f"Área do losango: {area:.2f}")
+        st.success(f"Área do losango: {area:.2f}")
 
 elif figura == "Trapézio":
 
-    base_maior = st.number_input("Base maior", value=0,0)
-    base_menor = st.number_input("Base menor", value=0,0)
-    altura = st.number_input("Altura", value=0,0)
-    
-   if st.button("Calcular Área"):
-       area = (base_maior + base_menor) * altura / 2
-    st.sucess("Área do trapézio: {area}")
+    base_maior = st.number_input("Base maior", value=0.0)
+    base_menor = st.number_input("Base menor", value=0.0)
+    altura = st.number_input("Altura", value=0.0)
+
+    if st.button("Calcular Área do Trapézio"):
+        area = ((base_maior + base_menor) * altura) / 2
+        st.success(f"Área do trapézio: {area:.2f}")
 
 # =========================
 # EQUAÇÃO DO 2º GRAU
