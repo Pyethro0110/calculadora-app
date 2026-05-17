@@ -15,8 +15,11 @@ if "history" not in st.session_state:
 if "mem" not in st.session_state:
     st.session_state.mem = 0
 
+if "expr" not in st.session_state:
+    st.session_state.expr = ""
+
 # =========================
-# ESTILO RETRÔ PIXEL
+# ESTILO RETRÔ MODERNO
 # =========================
 st.markdown("""
 <style>
@@ -27,42 +30,40 @@ st.markdown("""
     font-family: monospace;
 }
 
-/* ASSINATURA HP */
+/* ASSINATURA */
 .hp {
     font-size: 12px;
     color: #38bdf8;
     opacity: 0.8;
-    margin-bottom: 5px;
 }
 
-/* TÍTULO RETRÔ */
+/* TÍTULO */
 h1 {
-    color: #38bdf8;
     text-align: center;
+    color: #38bdf8;
     font-weight: 400;
     letter-spacing: 2px;
 }
 
-/* DISPLAY RETRÔ */
+/* DISPLAY */
 .display {
     background: #0b1220;
     border: 1px solid #38bdf8;
-    padding: 20px;
+    padding: 18px;
     border-radius: 6px;
-    font-size: 28px;
+    font-size: 30px;
     text-align: right;
     margin-bottom: 10px;
-    box-shadow: 0 0 10px #38bdf8;
 }
 
-/* BOTÕES PIXEL */
+/* BOTÕES */
 .stButton>button {
     background: #0b1220;
     color: #7dd3fc;
     border: 1px solid #38bdf8;
     height: 55px;
-    border-radius: 4px;
     font-size: 16px;
+    border-radius: 5px;
 }
 
 .stButton>button:hover {
@@ -84,18 +85,18 @@ h1 {
 # =========================
 # ASSINATURA
 # =========================
-st.markdown('<div class="hp">hp // pyhetr00 system</div>', unsafe_allow_html=True)
+st.markdown('<div class="hp">hp // system core</div>', unsafe_allow_html=True)
 
 # =========================
 # TÍTULO
 # =========================
-st.title("calculadora barra app")
+st.title("calculadora-app")
 
 # =========================
 # FUNÇÕES
 # =========================
-def add(x):
-    st.session_state.expr = st.session_state.get("expr", "") + str(x)
+def add(v):
+    st.session_state.expr += str(v)
 
 def clear():
     st.session_state.expr = ""
@@ -105,10 +106,6 @@ def calc(expr):
         return eval(expr, {"__builtins__": None}, {})
     except:
         return "erro"
-
-# init expr
-if "expr" not in st.session_state:
-    st.session_state.expr = ""
 
 # =========================
 # DISPLAY
@@ -120,7 +117,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # =========================
-# CALCULADORA BASE
+# TECLADO BÁSICO
 # =========================
 col1, col2, col3, col4 = st.columns(4)
 
@@ -156,58 +153,54 @@ if col3.button("="):
 col4.button("÷", on_click=lambda: add("/"))
 
 # =========================
-# FUNÇÕES RETRÔ EXTRAS
+# FUNÇÕES EXTRAS
 # =========================
 st.markdown("---")
 
-col1, col2, col3 = st.columns(3)
-
 n = st.number_input("valor", value=1.0)
 
-if col1.button("√"):
+c1, c2, c3 = st.columns(3)
+
+if c1.button("√"):
     r = math.sqrt(n)
+    st.session_state.expr = str(r)
     st.session_state.history.append(f"√{n} = {r}")
-    st.session_state.expr = str(r)
 
-if col2.button("x²"):
+if c2.button("x²"):
     r = n ** 2
+    st.session_state.expr = str(r)
     st.session_state.history.append(f"{n}² = {r}")
-    st.session_state.expr = str(r)
 
-if col3.button("log"):
+if c3.button("log"):
     r = math.log10(n)
-    st.session_state.history.append(f"log {n} = {r}")
     st.session_state.expr = str(r)
+    st.session_state.history.append(f"log({n}) = {r}")
 
-col1, col2, col3 = st.columns(3)
+c1, c2, c3 = st.columns(3)
 
-if col1.button("!"):
+if c1.button("!"):
     r = math.factorial(int(n))
+    st.session_state.expr = str(r)
     st.session_state.history.append(f"{n}! = {r}")
-    st.session_state.expr = str(r)
 
-if col2.button("%"):
+if c2.button("%"):
     r = n / 100
+    st.session_state.expr = str(r)
     st.session_state.history.append(f"{n}% = {r}")
-    st.session_state.expr = str(r)
 
-if col3.button("³√"):
+if c3.button("³√"):
     r = n ** (1/3)
-    st.session_state.history.append(f"³√{n} = {r}")
     st.session_state.expr = str(r)
+    st.session_state.history.append(f"³√{n} = {r}")
 
 # =========================
 # HISTÓRICO
 # =========================
 st.markdown("---")
-st.subheader("history log")
+st.subheader("history")
 
 if st.button("clear history"):
     st.session_state.history = []
 
-st.markdown('<div class="history">', unsafe_allow_html=True)
-
-for h in st.session_state.history[-10:]:
-    st.write(h)
-
-st.markdown("</div>", unsafe_allow_html=True)
+for item in st.session_state.history[-10:]:
+    st.write(item)
