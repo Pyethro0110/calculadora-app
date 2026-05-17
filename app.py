@@ -1,126 +1,191 @@
+import streamlit as st
 import math
 
-print("Olá, me chamo pi e sou sua calculadora.")
+# CONFIGURAÇÃO DA PÁGINA
+st.set_page_config(
+    page_title="Super Calculadora",
+    page_icon="🧮",
+    layout="centered"
+)
 
-nome = input("Como se chama? ")
-print("Olá", nome)
+# TÍTULO
+st.title("🧮 Super Calculadora")
+st.write("Calculadora completa com várias funções 🚀")
 
-print("""
-===== MENU =====
-1 - Operações básicas
-2 - Tabuada
-3 - Equação do 2 grau
-4 - Área
-================
-""")
+# MENU
+opcao = st.selectbox(
+    "Escolha uma função:",
+    [
+        "Operações Básicas",
+        "Potência",
+        "Porcentagem",
+        "Raiz Quadrada",
+        "Área",
+        "Equação do 2º Grau",
+        "Tabuada"
+    ]
+)
 
-opcao = input("Escolha uma opção (1-4): ")
+st.markdown("---")
 
-# =======================
-# 1 - OPERAÇÕES BÁSICAS
-# =======================
-if opcao == "1":
+# =========================
+# OPERAÇÕES BÁSICAS
+# =========================
+if opcao == "Operações Básicas":
 
-    n1 = float(input("Primeiro número: "))
-    n2 = float(input("Segundo número: "))
+    a = st.number_input("Primeiro número", value=0.0)
+    b = st.number_input("Segundo número", value=0.0)
 
-    op = input("Escolha a operação (+ - * /): ")
+    col1, col2, col3, col4 = st.columns(4)
 
-    if op == "+":
-        print("Resultado:", n1 + n2)
+    resultado = None
 
-    elif op == "-":
-        print("Resultado:", n1 - n2)
+    with col1:
+        if st.button("➕ Somar"):
+            resultado = a + b
 
-    elif op == "*":
-        print("Resultado:", n1 * n2)
+    with col2:
+        if st.button("➖ Subtrair"):
+            resultado = a - b
 
-    elif op == "/":
-        if n2 == 0:
-            print("Não pode dividir por zero!")
+    with col3:
+        if st.button("✖ Multiplicar"):
+            resultado = a * b
+
+    with col4:
+        if st.button("➗ Dividir"):
+            if b != 0:
+                resultado = a / b
+            else:
+                resultado = "Erro: divisão por zero"
+
+    if resultado is not None:
+        st.success(f"Resultado: {resultado}")
+
+# =========================
+# POTÊNCIA
+# =========================
+elif opcao == "Potência":
+
+    base = st.number_input("Base", value=0.0)
+    expoente = st.number_input("Expoente", value=0.0)
+
+    if st.button("🔼 Calcular Potência"):
+        resultado = base ** expoente
+        st.success(f"Resultado: {resultado}")
+
+# =========================
+# PORCENTAGEM
+# =========================
+elif opcao == "Porcentagem":
+
+    valor = st.number_input("Valor", value=0.0)
+    porcentagem = st.number_input("Porcentagem (%)", value=0.0)
+
+    if st.button("💯 Calcular Porcentagem"):
+        resultado = (valor * porcentagem) / 100
+        st.success(f"Resultado: {resultado}")
+
+# =========================
+# RAIZ QUADRADA
+# =========================
+elif opcao == "Raiz Quadrada":
+
+    numero = st.number_input("Digite um número", value=0.0)
+
+    if st.button("√ Calcular Raiz"):
+        if numero >= 0:
+            resultado = math.sqrt(numero)
+            st.success(f"Resultado: {resultado}")
         else:
-            print("Resultado:", n1 / n2)
+            st.error("Número negativo não possui raiz real.")
 
-    else:
-        print("Operação inválida.")
+# =========================
+# ÁREA
+# =========================
+elif opcao == "Área":
 
+    figura = st.selectbox(
+        "Escolha a figura:",
+        ["Quadrado", "Retângulo", "Triângulo", "Círculo"]
+    )
 
-# =======================
-# 2 - TABUADA
-# =======================
-elif opcao == "2":
+    if figura == "Quadrado":
 
-    numero = int(input("Número: "))
-    contador = 1
+        lado = st.number_input("Lado", value=0.0)
 
-    while contador <= 10:
-        print(numero, "x", contador, "=", numero * contador)
-        contador += 1
+        if st.button("📐 Calcular Área"):
+            area = lado * lado
+            st.success(f"Área do quadrado: {area}")
 
+    elif figura == "Retângulo":
 
-# =======================
-# 3 - EQUAÇÃO 2 GRAU
-# =======================
-elif opcao == "3":
+        base = st.number_input("Base", value=0.0)
+        altura = st.number_input("Altura", value=0.0)
 
-    a = float(input("Informe o valor de A: "))
-    b = float(input("Informe o valor de B: "))
-    c = float(input("Informe o valor de C: "))
+        if st.button("📐 Calcular Área"):
+            area = base * altura
+            st.success(f"Área do retângulo: {area}")
 
-    delta = b**2 - 4*a*c
+    elif figura == "Triângulo":
 
-    if delta < 0:
-        print("Não existe raiz real.")
+        base = st.number_input("Base", value=0.0)
+        altura = st.number_input("Altura", value=0.0)
 
-    else:
-        x1 = (-b + math.sqrt(delta)) / (2*a)
-        x2 = (-b - math.sqrt(delta)) / (2*a)
+        if st.button("📐 Calcular Área"):
+            area = (base * altura) / 2
+            st.success(f"Área do triângulo: {area}")
 
-        print("Solução: x1 =", x1, "x2 =", x2)
+    elif figura == "Círculo":
 
+        raio = st.number_input("Raio", value=0.0)
 
-# =======================
-# 4 - ÁREA
-# =======================
-elif opcao == "4":
+        if st.button("📐 Calcular Área"):
+            area = math.pi * (raio ** 2)
+            st.success(f"Área do círculo: {area:.2f}")
 
-    forma = input("Qual forma? (quadrado / retangulo / triangulo / circulo / trapezio / losango): ")
+# =========================
+# EQUAÇÃO DO 2º GRAU
+# =========================
+elif opcao == "Equação do 2º Grau":
 
-    if forma == "quadrado":
-        lado = float(input("Lado: "))
-        print("Área:", lado * lado)
+    st.write("Equação: ax² + bx + c = 0")
 
-    elif forma == "retangulo":
-        base = float(input("Base: "))
-        altura = float(input("Altura: "))
-        print("Área:", base * altura)
+    a = st.number_input("Valor de a", value=1.0)
+    b = st.number_input("Valor de b", value=0.0)
+    c = st.number_input("Valor de c", value=0.0)
 
-    elif forma == "circulo":
-        raio = float(input("Raio: "))
-        print("Área:", math.pi * raio ** 2)
+    if st.button("🧠 Resolver Equação"):
 
-    elif forma == "triangulo":
-        base = float(input("Base: "))
-        altura = float(input("Altura: "))
-        print("Área:", (base * altura) / 2)
+        delta = (b ** 2) - (4 * a * c)
 
-    elif forma == "trapezio":
-        B = float(input("Base maior: "))
-        b = float(input("Base menor: "))
-        h = float(input("Altura: "))
-        print("Área:", (B + b) * h / 2)
+        st.write(f"Delta = {delta}")
 
-    elif forma == "losango":
-        D = float(input("Diagonal maior: "))
-        d = float(input("Diagonal menor: "))
-        print("Área:", (D * d) / 2)
+        if delta < 0:
+            st.error("A equação não possui raízes reais.")
 
-    else:
-        print("Forma inválida.")
+        else:
+            x1 = (-b + math.sqrt(delta)) / (2 * a)
+            x2 = (-b - math.sqrt(delta)) / (2 * a)
 
+            st.success(f"x1 = {x1}")
+            st.success(f"x2 = {x2}")
 
-# =======================
-# ERRO
-# =======================
-else:
-    print("Opção inválida. Escolha de 1 a 4.")
+# =========================
+# TABUADA
+# =========================
+elif opcao == "Tabuada":
+
+    numero = st.number_input("Digite um número", value=1)
+
+    if st.button("📚 Gerar Tabuada"):
+
+        st.subheader(f"Tabuada do {numero}")
+
+        for i in range(1, 11):
+            resultado = numero * i
+            st.write(f"{numero} x {i} = {resultado}")
+
+# RODAPÉ
+st.markdown("---")
+st.caption("Criado com Python + Streamlit 🚀")
