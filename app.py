@@ -1,279 +1,226 @@
 import streamlit as st
 import math
 
-# CONFIGURAÇÃO DA PÁGINA
+# CONFIGURAÇÃO
 st.set_page_config(
-    page_title="Super Calculadora",
+    page_title="Super Calculadora Pro",
     page_icon="🧮",
     layout="centered"
 )
+
+# ESTILO VISUAL
+st.markdown("""
+<style>
+    .main {
+        background-color: #0f1117;
+        color: white;
+    }
+
+    .stButton>button {
+        width: 100%;
+        height: 60px;
+        font-size: 18px;
+        border-radius: 12px;
+        background: #2b2f3a;
+        color: white;
+        border: none;
+    }
+
+    .stButton>button:hover {
+        background: #4c5cff;
+        transition: 0.3s;
+    }
+
+    .block-container {
+        padding-top: 2rem;
+    }
+
+    h1, h2, h3 {
+        text-align: center;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # HISTÓRICO
 if "historico" not in st.session_state:
     st.session_state.historico = []
 
 # TÍTULO
-st.title("Super Calculadora")
-st.write("Calculadora completa com várias funções")
+st.title("Super Calculadora Pro")
+st.write("Interface estilo aplicativo moderno")
 
 # MENU
 opcao = st.selectbox(
     "Escolha uma função:",
     [
-        "Operações Básicas",
+        "Básico",
         "Potência",
         "Porcentagem",
-        "Raiz Quadrada",
+        "Raiz",
         "Área",
-        "Equação do 2º Grau",
+        "Bhaskara",
         "Tabuada",
-        "Conversor de Temperatura"
+        "Temperatura"
     ]
 )
 
 st.markdown("---")
 
-# =========================
-# OPERAÇÕES BÁSICAS
-# =========================
-if opcao == "Operações Básicas":
+# BÁSICO
+if opcao == "Básico":
 
-    a = st.number_input("Primeiro número", value=0.0)
-    b = st.number_input("Segundo número", value=0.0)
+    a = st.number_input("Número A", value=0.0)
+    b = st.number_input("Número B", value=0.0)
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2 = st.columns(2)
+    col3, col4 = st.columns(2)
 
-    resultado = None
+    if col1.button("Somar"):
+        r = a + b
+        st.session_state.historico.append(f"{a}+{b}={r}")
+        st.success(r)
 
-    with col1:
-        if st.button("Somar"):
-            resultado = a + b
-            st.session_state.historico.append(f"{a} + {b} = {resultado}")
+    if col2.button("Subtrair"):
+        r = a - b
+        st.session_state.historico.append(f"{a}-{b}={r}")
+        st.success(r)
 
-    with col2:
-        if st.button("Subtrair"):
-            resultado = a - b
-            st.session_state.historico.append(f"{a} - {b} = {resultado}")
+    if col3.button("Multiplicar"):
+        r = a * b
+        st.session_state.historico.append(f"{a}×{b}={r}")
+        st.success(r)
 
-    with col3:
-        if st.button("Multiplicar"):
-            resultado = a * b
-            st.session_state.historico.append(f"{a} × {b} = {resultado}")
+    if col4.button("Dividir"):
+        if b != 0:
+            r = a / b
+            st.session_state.historico.append(f"{a}/{b}={r}")
+            st.success(r)
+        else:
+            st.error("Erro: divisão por zero")
 
-    with col4:
-        if st.button("Dividir"):
-            if b != 0:
-                resultado = a / b
-                st.session_state.historico.append(f"{a} ÷ {b} = {resultado}")
-            else:
-                resultado = "Erro: divisão por zero"
-
-    if resultado is not None:
-        st.success(f"Resultado: {resultado}")
-
-# =========================
 # POTÊNCIA
-# =========================
 elif opcao == "Potência":
 
     base = st.number_input("Base", value=0.0)
-    expoente = st.number_input("Expoente", value=0.0)
+    exp = st.number_input("Expoente", value=0.0)
 
-    if st.button("Calcular Potência"):
-        resultado = base ** expoente
-        st.session_state.historico.append(f"{base} ^ {expoente} = {resultado}")
-        st.success(f"Resultado: {resultado}")
+    if st.button("Calcular"):
+        r = base ** exp
+        st.session_state.historico.append(f"{base}^{exp}={r}")
+        st.success(r)
 
-# =========================
 # PORCENTAGEM
-# =========================
 elif opcao == "Porcentagem":
 
-    valor = st.number_input("Valor", value=0.0)
-    porcentagem = st.number_input("Porcentagem (%)", value=0.0)
+    v = st.number_input("Valor", value=0.0)
+    p = st.number_input("Porcentagem", value=0.0)
 
-    if st.button("Calcular Porcentagem"):
-        resultado = (valor * porcentagem) / 100
-        st.session_state.historico.append(f"{porcentagem}% de {valor} = {resultado}")
-        st.success(f"Resultado: {resultado}")
+    if st.button("Calcular"):
+        r = (v * p) / 100
+        st.session_state.historico.append(f"{p}% de {v}={r}")
+        st.success(r)
 
-# =========================
-# RAIZ QUADRADA
-# =========================
-elif opcao == "Raiz Quadrada":
+# RAIZ
+elif opcao == "Raiz":
 
-    numero = st.number_input("Digite um número", value=0.0)
+    n = st.number_input("Número", value=0.0)
 
-    if st.button("Calcular Raiz"):
-        if numero >= 0:
-            resultado = math.sqrt(numero)
-            st.session_state.historico.append(f"√{numero} = {resultado}")
-            st.success(f"Resultado: {resultado}")
+    if st.button("Calcular"):
+        if n >= 0:
+            r = math.sqrt(n)
+            st.session_state.historico.append(f"√{n}={r}")
+            st.success(r)
         else:
-            st.error("Número negativo não possui raiz real.")
+            st.error("Número negativo não possui raiz real")
 
-# =========================
 # ÁREA
-# =========================
 elif opcao == "Área":
 
-    figura = st.selectbox(
-        "Escolha a figura:",
-        [
-            "Quadrado",
-            "Retângulo",
-            "Triângulo",
-            "Círculo",
-            "Losango",
-            "Trapézio"
-        ]
-    )
+    fig = st.selectbox("Figura", ["Quadrado", "Retângulo", "Círculo"])
 
-    if figura == "Quadrado":
+    if fig == "Quadrado":
+        l = st.number_input("Lado", value=0.0)
+        if st.button("Calcular"):
+            r = l * l
+            st.session_state.historico.append(f"Quadrado={r}")
+            st.success(r)
 
-        lado = st.number_input("Lado", value=0.0)
+    if fig == "Retângulo":
+        b = st.number_input("Base", value=0.0)
+        h = st.number_input("Altura", value=0.0)
+        if st.button("Calcular"):
+            r = b * h
+            st.session_state.historico.append(f"Retângulo={r}")
+            st.success(r)
 
-        if st.button("Calcular Área"):
-            area = lado * lado
-            st.session_state.historico.append(f"Área quadrado: {area}")
-            st.success(f"Área do quadrado: {area}")
+    if fig == "Círculo":
+        r0 = st.number_input("Raio", value=0.0)
+        if st.button("Calcular"):
+            r = math.pi * r0 ** 2
+            st.session_state.historico.append(f"Círculo={r}")
+            st.success(round(r, 2))
 
-    elif figura == "Retângulo":
+# BHASKARA
+elif opcao == "Bhaskara":
 
-        base = st.number_input("Base", value=0.0)
-        altura = st.number_input("Altura", value=0.0)
+    a = st.number_input("a", value=1.0)
+    b = st.number_input("b", value=0.0)
+    c = st.number_input("c", value=0.0)
 
-        if st.button("Calcular Área"):
-            area = base * altura
-            st.session_state.historico.append(f"Área retângulo: {area}")
-            st.success(f"Área do retângulo: {area}")
+    if st.button("Resolver"):
 
-    elif figura == "Triângulo":
+        d = b**2 - 4*a*c
 
-        base = st.number_input("Base", value=0.0)
-        altura = st.number_input("Altura", value=0.0)
-
-        if st.button("Calcular Área"):
-            area = (base * altura) / 2
-            st.session_state.historico.append(f"Área triângulo: {area}")
-            st.success(f"Área do triângulo: {area}")
-
-    elif figura == "Círculo":
-
-        raio = st.number_input("Raio", value=0.0)
-
-        if st.button("Calcular Área"):
-            area = math.pi * (raio ** 2)
-            st.session_state.historico.append(f"Área círculo: {area}")
-            st.success(f"Área do círculo: {area:.2f}")
-
-    elif figura == "Losango":
-
-        dmaior = st.number_input("Diagonal maior", value=0.0)
-        dmenor = st.number_input("Diagonal menor", value=0.0)
-
-        if st.button("Calcular Área"):
-            area = (dmaior * dmenor) / 2
-            st.session_state.historico.append(f"Área losango: {area}")
-            st.success(f"Área do losango: {area:.2f}")
-
-    elif figura == "Trapézio":
-
-        bmaior = st.number_input("Base maior", value=0.0)
-        bmenor = st.number_input("Base menor", value=0.0)
-        altura = st.number_input("Altura", value=0.0)
-
-        if st.button("Calcular Área"):
-            area = ((bmaior + bmenor) * altura) / 2
-            st.session_state.historico.append(f"Área trapézio: {area}")
-            st.success(f"Área do trapézio: {area:.2f}")
-
-# =========================
-# EQUAÇÃO DO 2º GRAU
-# =========================
-elif opcao == "Equação do 2º Grau":
-
-    a = st.number_input("Valor de a", value=1.0)
-    b = st.number_input("Valor de b", value=0.0)
-    c = st.number_input("Valor de c", value=0.0)
-
-    if st.button("Calcular Bhaskara"):
-
-        if a == 0:
-            st.error("O valor de 'a' não pode ser zero.")
+        if d < 0:
+            st.error("Sem raízes reais")
         else:
+            x1 = (-b + math.sqrt(d)) / (2*a)
+            x2 = (-b - math.sqrt(d)) / (2*a)
 
-            delta = (b ** 2) - (4 * a * c)
+            st.session_state.historico.append(f"x1={x1}, x2={x2}")
+            st.success(f"x1={x1} | x2={x2}")
 
-            if delta < 0:
-                st.error("Sem raízes reais.")
-
-            elif delta == 0:
-                x = -b / (2 * a)
-                st.session_state.historico.append(f"Bhaskara: x = {x}")
-                st.success(f"x = {x}")
-
-            else:
-                x1 = (-b + math.sqrt(delta)) / (2 * a)
-                x2 = (-b - math.sqrt(delta)) / (2 * a)
-
-                st.session_state.historico.append(f"Bhaskara: x1={x1}, x2={x2}")
-                st.success(f"x1 = {x1}, x2 = {x2}")
-
-# =========================
 # TABUADA
-# =========================
 elif opcao == "Tabuada":
 
-    numero = st.number_input("Digite um número", value=1)
+    n = st.number_input("Número", value=1)
 
-    if st.button("Gerar Tabuada"):
-
+    if st.button("Gerar"):
         for i in range(1, 11):
-            st.write(f"{numero} x {i} = {numero*i}")
+            st.write(f"{n} x {i} = {n*i}")
 
-# =========================
-# CONVERSOR DE TEMPERATURA
-# =========================
-elif opcao == "Conversor de Temperatura":
+# TEMPERATURA
+elif opcao == "Temperatura":
 
-    temp = st.number_input("Temperatura", value=0.0)
+    t = st.number_input("Temperatura", value=0.0)
 
     tipo = st.selectbox(
-        "Converter:",
-        ["Celsius → Fahrenheit", "Fahrenheit → Celsius", "Celsius → Kelvin"]
+        "Converter",
+        ["C → F", "F → C", "C → K"]
     )
 
     if st.button("Converter"):
 
-        if tipo == "Celsius → Fahrenheit":
-            resultado = (temp * 9/5) + 32
-
-        elif tipo == "Fahrenheit → Celsius":
-            resultado = (temp - 32) * 5/9
-
+        if tipo == "C → F":
+            r = (t * 9/5) + 32
+        elif tipo == "F → C":
+            r = (t - 32) * 5/9
         else:
-            resultado = temp + 273.15
+            r = t + 273.15
 
-        st.session_state.historico.append(f"Conversão: {resultado}")
-        st.success(f"Resultado: {resultado:.2f}")
+        st.session_state.historico.append(f"Temp={r}")
+        st.success(round(r, 2))
 
-# =========================
-# HISTÓRICO + LIMPAR
-# =========================
+# HISTÓRICO
 st.markdown("---")
 st.subheader("Histórico")
 
-if st.session_state.historico:
-    for item in st.session_state.historico[-10:]:
-        st.write(item)
-else:
-    st.write("Sem histórico ainda.")
+col1, col2 = st.columns(2)
 
-if st.button("Limpar histórico"):
-    st.session_state.historico = []
-    st.success("Histórico apagado!")
+with col1:
+    if st.button("Limpar histórico"):
+        st.session_state.historico = []
+        st.success("Histórico limpo")
 
-# RODAPÉ
-st.markdown("---")
-st.caption("FEITO POR PYHETR00")
+for item in st.session_state.historico[-8:]:
+    st.write(item)
