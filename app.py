@@ -12,144 +12,233 @@ st.set_page_config(
 if "history" not in st.session_state:
     st.session_state.history = []
 
-if "expr" not in st.session_state:
-    st.session_state.expr = ""
-
 # =========================
-# ESTILO MODERNO (BASE LIMPA)
+# ESTILO SIMPLES
 # =========================
 st.markdown("""
 <style>
 
-/* FUNDO LIMPO MODERNO */
 .stApp {
     background: #f8fafc;
     color: #111827;
     font-family: Arial, sans-serif;
 }
 
-/* TÍTULO RETRÔ PIXEL AZUL */
-.title-retro {
+/* TÍTULO */
+.title {
     text-align: center;
-    font-size: 34px;
-    font-weight: 700;
-    color: #38bdf8;
-
-    /* efeito pixel/neon */
-    text-shadow:
-        1px 1px 0px #0ea5e9,
-        2px 2px 0px #0284c7,
-        3px 3px 0px #0369a1;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #0ea5e9;
+    margin-bottom: 5px;
 }
 
-/* DISPLAY MODERNO */
-.display {
-    background: white;
-    border-radius: 12px;
-    padding: 18px;
-    font-size: 30px;
-    text-align: right;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-    margin-bottom: 12px;
-}
-
-/* BOTÕES MODERNOS */
-.stButton>button {
-    border-radius: 10px;
-    height: 50px;
-    font-size: 16px;
-}
-
-/* HISTÓRICO */
-.history {
-    margin-top: 10px;
-    padding: 10px;
-    background: #f1f5f9;
-    border-radius: 10px;
+/* ASSINATURA */
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 12px;
+    color: #64748b;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 # =========================
-# TÍTULO (SÓ AQUI É RETRÔ)
+# TÍTULO
 # =========================
-st.markdown("""
-<div class="title-retro">
-calculadora-app
-</div>
-""", unsafe_allow_html=True)
+st.markdown('<div class="title">calculadora-app</div>', unsafe_allow_html=True)
+
+st.write("Escolha uma função no menu abaixo")
 
 # =========================
-# FUNÇÕES
+# MENU
 # =========================
-def add(v):
-    st.session_state.expr += str(v)
+opcao = st.selectbox(
+    "Menu",
+    [
+        "Operações Básicas",
+        "Potência",
+        "Porcentagem",
+        "Raiz Quadrada",
+        "Logaritmo",
+        "Conversor de Temperatura",
+        "Conversor de Medidas",
+        "Bhaskara",
+        "IMC",
+        "Histórico"
+    ]
+)
 
-def clear():
-    st.session_state.expr = ""
-
-def calc(expr):
-    try:
-        return eval(expr, {"__builtins__": None}, {})
-    except:
-        return "erro"
-
-# =========================
-# DISPLAY
-# =========================
-st.markdown(f"""
-<div class="display">
-{st.session_state.expr or "0"}
-</div>
-""", unsafe_allow_html=True)
+st.markdown("---")
 
 # =========================
-# TECLADO SIMPLES
+# OPERAÇÕES BÁSICAS
 # =========================
-col1, col2, col3, col4 = st.columns(4)
+if opcao == "Operações Básicas":
 
-col1.button("C", on_click=clear)
-col2.button("7", on_click=lambda: add("7"))
-col3.button("8", on_click=lambda: add("8"))
-col4.button("9", on_click=lambda: add("9"))
+    a = st.number_input("Número 1", value=0.0)
+    b = st.number_input("Número 2", value=0.0)
+    operacao = st.selectbox("Operação", ["+", "-", "*", "/"])
 
-col1, col2, col3, col4 = st.columns(4)
+    if st.button("Calcular"):
 
-col1.button("4", on_click=lambda: add("4"))
-col2.button("5", on_click=lambda: add("5"))
-col3.button("6", on_click=lambda: add("6"))
-col4.button("+", on_click=lambda: add("+"))
+        if operacao == "+":
+            r = a + b
+        elif operacao == "-":
+            r = a - b
+        elif operacao == "*":
+            r = a * b
+        elif operacao == "/":
+            r = a / b if b != 0 else "Erro divisão por zero"
 
-col1, col2, col3, col4 = st.columns(4)
+        st.session_state.history.append(f"{a} {operacao} {b} = {r}")
+        st.success(r)
 
-col1.button("1", on_click=lambda: add("1"))
-col2.button("2", on_click=lambda: add("2"))
-col3.button("3", on_click=lambda: add("3"))
-col4.button("-", on_click=lambda: add("-"))
+# =========================
+# POTÊNCIA
+# =========================
+elif opcao == "Potência":
 
-col1, col2, col3, col4 = st.columns(4)
+    base = st.number_input("Base", value=0.0)
+    exp = st.number_input("Expoente", value=0.0)
 
-col1.button("0", on_click=lambda: add("0"))
-col2.button(".", on_click=lambda: add("."))
+    if st.button("Calcular"):
+        r = base ** exp
+        st.session_state.history.append(f"{base}^{exp} = {r}")
+        st.success(r)
 
-if col3.button("="):
-    r = calc(st.session_state.expr)
-    st.session_state.history.append(f"{st.session_state.expr} = {r}")
-    st.session_state.expr = str(r)
+# =========================
+# PORCENTAGEM
+# =========================
+elif opcao == "Porcentagem":
 
-col4.button("÷", on_click=lambda: add("/"))
+    valor = st.number_input("Valor", value=0.0)
+    porc = st.number_input("Porcentagem (%)", value=0.0)
+
+    if st.button("Calcular"):
+        r = (valor * porc) / 100
+        st.session_state.history.append(f"{porc}% de {valor} = {r}")
+        st.success(r)
+
+# =========================
+# RAIZ QUADRADA
+# =========================
+elif opcao == "Raiz Quadrada":
+
+    n = st.number_input("Número", value=0.0)
+
+    if st.button("Calcular"):
+        if n >= 0:
+            r = math.sqrt(n)
+        else:
+            r = "Número inválido"
+
+        st.session_state.history.append(f"√{n} = {r}")
+        st.success(r)
+
+# =========================
+# LOGARITMO
+# =========================
+elif opcao == "Logaritmo":
+
+    n = st.number_input("Número", value=1.0)
+
+    if st.button("Calcular"):
+        if n > 0:
+            r = math.log10(n)
+        else:
+            r = "Inválido"
+
+        st.session_state.history.append(f"log({n}) = {r}")
+        st.success(r)
+
+# =========================
+# TEMPERATURA
+# =========================
+elif opcao == "Conversor de Temperatura":
+
+    t = st.number_input("Temperatura", value=0.0)
+    tipo = st.selectbox("Conversão", ["C → F", "F → C", "C → K"])
+
+    if st.button("Converter"):
+
+        if tipo == "C → F":
+            r = (t * 9/5) + 32
+        elif tipo == "F → C":
+            r = (t - 32) * 5/9
+        else:
+            r = t + 273.15
+
+        st.session_state.history.append(f"{t} {tipo} = {r}")
+        st.success(r)
+
+# =========================
+# MEDIDAS
+# =========================
+elif opcao == "Conversor de Medidas":
+
+    m = st.number_input("Metros", value=1.0)
+
+    if st.button("Converter"):
+        r = m * 100
+        st.session_state.history.append(f"{m} m = {r} cm")
+        st.success(f"{r} cm")
+
+# =========================
+# BHASKARA
+# =========================
+elif opcao == "Bhaskara":
+
+    a = st.number_input("a", value=1.0)
+    b = st.number_input("b", value=0.0)
+    c = st.number_input("c", value=0.0)
+
+    if st.button("Resolver"):
+
+        delta = b**2 - 4*a*c
+
+        if delta < 0:
+            r = "Sem raízes reais"
+        else:
+            x1 = (-b + math.sqrt(delta)) / (2*a)
+            x2 = (-b - math.sqrt(delta)) / (2*a)
+            r = f"x1={x1}, x2={x2}"
+
+        st.session_state.history.append(f"Bhaskara: {r}")
+        st.success(r)
+
+# =========================
+# IMC
+# =========================
+elif opcao == "IMC":
+
+    peso = st.number_input("Peso (kg)", value=70.0)
+    altura = st.number_input("Altura (m)", value=1.70)
+
+    if st.button("Calcular"):
+        r = peso / (altura**2)
+        st.session_state.history.append(f"IMC = {r}")
+        st.success(round(r, 2))
 
 # =========================
 # HISTÓRICO
 # =========================
-st.markdown("---")
-st.subheader("history")
+elif opcao == "Histórico":
 
-if st.button("clear history"):
-    st.session_state.history = []
+    st.subheader("Histórico de cálculos")
 
-for item in st.session_state.history[-10:]:
-    st.write(item)
+    if st.button("Limpar histórico"):
+        st.session_state.history = []
+
+    for item in st.session_state.history[-15:]:
+        st.write(item)
+
+# =========================
+# RODAPÉ (SUA ASSINATURA)
+# =========================
+st.markdown("""
+<div class="footer">
+FEITO POR PYHETR00
+</div>
+""", unsafe_allow_html=True)
