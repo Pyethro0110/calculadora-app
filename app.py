@@ -9,8 +9,8 @@ st.set_page_config(
 )
 
 # TÍTULO
-st.title("🧮 Super Calculadora")
-st.write("Calculadora completa com várias funções 🚀")
+st.title("Super Calculadora")
+st.write("Calculadora completa com várias funções ")
 
 # MENU
 opcao = st.selectbox(
@@ -41,19 +41,19 @@ if opcao == "Operações Básicas":
     resultado = None
 
     with col1:
-        if st.button("➕ Somar"):
+        if st.button("Somar"):
             resultado = a + b
 
     with col2:
-        if st.button("➖ Subtrair"):
+        if st.button("Subtrair"):
             resultado = a - b
 
     with col3:
-        if st.button("✖ Multiplicar"):
+        if st.button("Multiplicar"):
             resultado = a * b
 
     with col4:
-        if st.button("➗ Dividir"):
+        if st.button("Dividir"):
             if b != 0:
                 resultado = a / b
             else:
@@ -70,7 +70,7 @@ elif opcao == "Potência":
     base = st.number_input("Base", value=0.0)
     expoente = st.number_input("Expoente", value=0.0)
 
-    if st.button("🔼 Calcular Potência"):
+    if st.button("Calcular Potência"):
         resultado = base ** expoente
         st.success(f"Resultado: {resultado}")
 
@@ -82,7 +82,7 @@ elif opcao == "Porcentagem":
     valor = st.number_input("Valor", value=0.0)
     porcentagem = st.number_input("Porcentagem (%)", value=0.0)
 
-    if st.button("💯 Calcular Porcentagem"):
+    if st.button("Calcular Porcentagem"):
         resultado = (valor * porcentagem) / 100
         st.success(f"Resultado: {resultado}")
 
@@ -93,7 +93,7 @@ elif opcao == "Raiz Quadrada":
 
     numero = st.number_input("Digite um número", value=0.0)
 
-    if st.button("√ Calcular Raiz"):
+    if st.button("Calcular Raiz"):
         if numero >= 0:
             resultado = math.sqrt(numero)
             st.success(f"Resultado: {resultado}")
@@ -114,7 +114,7 @@ elif opcao == "Área":
 
         lado = st.number_input("Lado", value=0.0)
 
-        if st.button("📐 Calcular Área"):
+        if st.button("Calcular Área"):
             area = lado * lado
             st.success(f"Área do quadrado: {area}")
 
@@ -123,7 +123,7 @@ elif opcao == "Área":
         base = st.number_input("Base", value=0.0)
         altura = st.number_input("Altura", value=0.0)
 
-        if st.button("📐 Calcular Área"):
+        if st.button("Calcular Área"):
             area = base * altura
             st.success(f"Área do retângulo: {area}")
 
@@ -132,7 +132,7 @@ elif opcao == "Área":
         base = st.number_input("Base", value=0.0)
         altura = st.number_input("Altura", value=0.0)
 
-        if st.button("📐 Calcular Área"):
+        if st.button("Calcular Área"):
             area = (base * altura) / 2
             st.success(f"Área do triângulo: {area}")
 
@@ -140,7 +140,7 @@ elif opcao == "Área":
 
         raio = st.number_input("Raio", value=0.0)
 
-        if st.button("📐 Calcular Área"):
+        if st.button("Calcular Área"):
             area = math.pi * (raio ** 2)
             st.success(f"Área do círculo: {area:.2f}")
 
@@ -155,7 +155,7 @@ elif opcao == "Equação do 2º Grau":
     b = st.number_input("Valor de b", value=0.0)
     c = st.number_input("Valor de c", value=0.0)
 
-    if st.button("🧠 Resolver Equação"):
+    if st.button("Resolver Equação"):
 
         delta = (b ** 2) - (4 * a * c)
 
@@ -178,7 +178,7 @@ elif opcao == "Tabuada":
 
     numero = st.number_input("Digite um número", value=1)
 
-    if st.button("📚 Gerar Tabuada"):
+    if st.button("Gerar Tabuada"):
 
         st.subheader(f"Tabuada do {numero}")
 
@@ -188,4 +188,5 @@ elif opcao == "Tabuada":
 
 # RODAPÉ
 st.markdown("---")
-st.caption("Criado com Python + Streamlit 🚀")
+st.caption("FEITO POR PYHETR00
+Criado com Python + Streamlit ")
