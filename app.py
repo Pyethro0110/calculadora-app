@@ -12,85 +12,75 @@ st.set_page_config(
 if "history" not in st.session_state:
     st.session_state.history = []
 
-if "mem" not in st.session_state:
-    st.session_state.mem = 0
-
 if "expr" not in st.session_state:
     st.session_state.expr = ""
 
 # =========================
-# ESTILO RETRÔ MODERNO
+# ESTILO MODERNO (BASE LIMPA)
 # =========================
 st.markdown("""
 <style>
 
+/* FUNDO LIMPO MODERNO */
 .stApp {
-    background: #050914;
-    color: #7dd3fc;
-    font-family: monospace;
+    background: #f8fafc;
+    color: #111827;
+    font-family: Arial, sans-serif;
 }
 
-/* ASSINATURA */
-.hp {
-    font-size: 12px;
-    color: #38bdf8;
-    opacity: 0.8;
-}
-
-/* TÍTULO */
-h1 {
+/* TÍTULO RETRÔ PIXEL AZUL */
+.title-retro {
     text-align: center;
+    font-size: 34px;
+    font-weight: 700;
     color: #38bdf8;
-    font-weight: 400;
-    letter-spacing: 2px;
-}
 
-/* DISPLAY */
-.display {
-    background: #0b1220;
-    border: 1px solid #38bdf8;
-    padding: 18px;
-    border-radius: 6px;
-    font-size: 30px;
-    text-align: right;
+    /* efeito pixel/neon */
+    text-shadow:
+        1px 1px 0px #0ea5e9,
+        2px 2px 0px #0284c7,
+        3px 3px 0px #0369a1;
+    letter-spacing: 2px;
     margin-bottom: 10px;
 }
 
-/* BOTÕES */
-.stButton>button {
-    background: #0b1220;
-    color: #7dd3fc;
-    border: 1px solid #38bdf8;
-    height: 55px;
-    font-size: 16px;
-    border-radius: 5px;
+/* DISPLAY MODERNO */
+.display {
+    background: white;
+    border-radius: 12px;
+    padding: 18px;
+    font-size: 30px;
+    text-align: right;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    margin-bottom: 12px;
 }
 
-.stButton>button:hover {
-    background: #38bdf8;
-    color: #0b1220;
+/* BOTÕES MODERNOS */
+.stButton>button {
+    border-radius: 10px;
+    height: 50px;
+    font-size: 16px;
 }
 
 /* HISTÓRICO */
 .history {
     margin-top: 10px;
     padding: 10px;
-    border: 1px dashed #38bdf8;
-    font-size: 13px;
+    background: #f1f5f9;
+    border-radius: 10px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 # =========================
-# ASSINATURA
+# TÍTULO (SÓ AQUI É RETRÔ)
 # =========================
-st.markdown('<div class="hp">hp // system core</div>', unsafe_allow_html=True)
-
-# =========================
-# TÍTULO
-# =========================
-st.title("calculadora-app")
+st.markdown("""
+<div class="title-retro">
+calculadora-app
+</div>
+""", unsafe_allow_html=True)
 
 # =========================
 # FUNÇÕES
@@ -117,7 +107,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # =========================
-# TECLADO BÁSICO
+# TECLADO SIMPLES
 # =========================
 col1, col2, col3, col4 = st.columns(4)
 
@@ -151,47 +141,6 @@ if col3.button("="):
     st.session_state.expr = str(r)
 
 col4.button("÷", on_click=lambda: add("/"))
-
-# =========================
-# FUNÇÕES EXTRAS
-# =========================
-st.markdown("---")
-
-n = st.number_input("valor", value=1.0)
-
-c1, c2, c3 = st.columns(3)
-
-if c1.button("√"):
-    r = math.sqrt(n)
-    st.session_state.expr = str(r)
-    st.session_state.history.append(f"√{n} = {r}")
-
-if c2.button("x²"):
-    r = n ** 2
-    st.session_state.expr = str(r)
-    st.session_state.history.append(f"{n}² = {r}")
-
-if c3.button("log"):
-    r = math.log10(n)
-    st.session_state.expr = str(r)
-    st.session_state.history.append(f"log({n}) = {r}")
-
-c1, c2, c3 = st.columns(3)
-
-if c1.button("!"):
-    r = math.factorial(int(n))
-    st.session_state.expr = str(r)
-    st.session_state.history.append(f"{n}! = {r}")
-
-if c2.button("%"):
-    r = n / 100
-    st.session_state.expr = str(r)
-    st.session_state.history.append(f"{n}% = {r}")
-
-if c3.button("³√"):
-    r = n ** (1/3)
-    st.session_state.expr = str(r)
-    st.session_state.history.append(f"³√{n} = {r}")
 
 # =========================
 # HISTÓRICO
